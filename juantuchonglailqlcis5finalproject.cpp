@@ -20,11 +20,11 @@ struct student {
 	string s_name;
 	int s_grade;
 	int s_age;
-	int addScore;
-	int subScore;
-	int mulScore;
-	int divScore;
-	int finalScore;
+	int addScore = 0;
+	int subScore = 0;
+	int mulScore = 0;
+	int divScore = 0;
+	int finalScore = 0;
 };
 
 struct Addressbooks {
@@ -36,15 +36,21 @@ struct Addressbooks {
 void showMenu();
 void enterInfo(Addressbooks* abs);
 void addMode(Addressbooks* abs);
-//int isCorrect(int ans, int tans);
+void subMode(Addressbooks* abs);
+void mulMode(Addressbooks* abs);
+void divMode(Addressbooks* abs);
 int isExist(Addressbooks* abs, string name);
 void showStatsOne(Addressbooks* abs);
 void showStatsAll(Addressbooks* abs);
-void swap(int& a, int& b);
-void showRank(Addressbooks* abs);
 void editStudent(Addressbooks* abs);
 void removeStudent(Addressbooks* abs);
 void removeAll(Addressbooks* abs);
+void showAddRank(Addressbooks* abs);
+void showSubRank(Addressbooks* abs);
+void showMulRank(Addressbooks* abs);
+void showDivRank(Addressbooks* abs);
+void showFinalRank(Addressbooks* abs);
+void swap(int& a, int& b);
 
 
 int main() {
@@ -53,9 +59,8 @@ int main() {
 	abs.s_size = 0;//to make sure the size is 0 at first
 	srand((unsigned int)time(NULL));
 
-	//int select = 0;
 
-	cout << "\nu need to input ur info to start the practice game" << endl;
+	std::cout << "\nu need to input ur info to start the practice game" << endl;
 
 
 	while (true) {
@@ -64,7 +69,7 @@ int main() {
 
 		showMenu();//select from menu
 
-		cout << "\nselect one from menu" << endl;
+		std::cout << "\nselect one from menu" << endl;
 		cin >> select;
 
 		switch (select) {
@@ -72,32 +77,32 @@ int main() {
 			enterInfo(&abs);//let student enter their info first
 			break;
 		case 2://practice: select game mode(+-*/)
-			//chooseGameMode(&abs);
 		{
 			int chs = 0;
 
-			//system("pause");
-			//system("CLS");
 
-			cout << "\npls choose ur game mode" << endl;
-			cout << "1. addition\n" << "2. substraction\n" << "3. multiplication\n" << "4. division\n" << endl;
+			std::cout << "\npls choose ur game mode" << endl;
+			std::cout << "1. addition\n" << "2. substraction\n" << "3. multiplication\n" << "4. division\n" << endl;
 			cin >> chs;
 
-			while (true) {
+			//while (true) {
 				switch (chs) {
 				case 1:
 					addMode(&abs);
 					break;
 				case 2:
+					subMode(&abs);
 					break;
 				case 3:
+					mulMode(&abs);
 					break;
 				case 4:
+					divMode(&abs);
 					break;
 				default:
-					cout << "chooose one from menu pls" << endl;
+					std::cout << "chooose one from menu pls" << endl;
 				}
-			}
+			//}
 		}
 		break;
 		case 3://show stats(one specific student)
@@ -107,7 +112,58 @@ int main() {
 			showStatsAll(&abs);
 			break;
 		case 5://show rank(5 types of ranking: + - * / and final score)
-			showRank(&abs);
+		{
+			int haha = 0;
+
+			cout << "What type of rank you wanna see" << endl;
+			cout << "1. Add"
+				<< "\n2. Sub"
+				<< "\n3. Mul"
+				<< "\n4. Div"
+				<< "\n5. Final" << endl;
+			cin >> haha;
+
+			//if (haha == 1) {
+			//	showAddRank(&abs);
+			//}
+			//else if (haha == 2) {
+			//	showSubRank(&abs);
+			//}
+			//else if (haha == 3) {
+			//	showMulRank(&abs);
+			//}
+			//else if (haha == 4) {
+			//	showDivRank(&abs);
+			//}
+			//else if (haha == 5) {
+			//	showFinalRank(&abs);
+			//}
+			//else {
+			//	cout << "choose 1-5 pls" << endl;
+			//	return;
+			//}
+
+			switch (haha) {
+			case 1:
+				showAddRank(&abs);
+				break;
+			case 2:
+				showSubRank(&abs);
+				break;
+			case 3:
+				showMulRank(&abs);
+				break;
+			case 4:
+				showDivRank(&abs);
+				break;
+			case 5:
+				showFinalRank(&abs);
+				break;
+			default:
+				std::cout << "chooose one from menu pls" << endl;
+			}
+
+		}
 			break;
 		case 6://edit info(change the name, grade and age only, cannot change the score
 			editStudent(&abs);
@@ -119,11 +175,11 @@ int main() {
 			removeAll(&abs);
 			break;
 		case 0://quit
-			cout << "ty 4 using" << endl;
+			std::cout << "ty 4 using" << endl;
 			return 0;//return a 0 to end the program
 			break;
 		default://if they input a # that didnt show on menu
-			cout << "u have 2 choose one from menu" << endl;
+			std::cout << "u have 2 choose one from menu" << endl;
 		}
 	}
 	return 0;
@@ -142,31 +198,24 @@ void enterInfo(Addressbooks* abs) {//to record every students' info
 		int age = 0;
 		int adds = 0;
 
+
 		cout << "\ninput ur name" << endl;
 		cin >> name;
-		abs->studentArray[abs->s_size].s_name = name;//use pointer to save it into the struct
+		abs->studentArray[abs->s_size + 1].s_name = name;//use pointer to save it into the struct
 
 		cout << "input ur grade" << endl;
 		cin >> grade;
-		abs->studentArray[abs->s_size].s_grade = grade;//use pointer to save it into the struct
+		abs->studentArray[abs->s_size + 1].s_grade = grade;//use pointer to save it into the struct
 
 		cout << "input ur age" << endl;
 		cin >> age;
-		abs->studentArray[abs->s_size].s_age = age;//use pointer to save it into the struct
-
-
-		cout << "input add score" << endl;
-		cin >> adds;
-		abs->studentArray[abs->s_size].addScore = adds;//use pointer to save it into the struct
+		abs->studentArray[abs->s_size + 1].s_age = age;//use pointer to save it into the struct
 
 
 		abs->s_size++;//add 1 every time it repeats, to show that theres 1 student more
 
-		cout << "\nAdded successfully" << endl;//a reminder
+		std::cout << "\nAdded successfully" << endl;//a reminder
 	}
-
-	//system("pause");
-	//system("CLS");//clear screen
 }
 
 void showMenu() {
@@ -180,30 +229,6 @@ void showMenu() {
 	cout << "8. remove all" << endl;
 	cout << "0. quit" << endl;
 }
-
-//void chooseGameMode(Addressbooks *abs) {
-//
-//	int chs = 0;
-//	cout << "pls choose ur game mode" << endl;
-//	cout << "addition\n" << "substraction\n" << "multiplication\n" << "division\n" << endl;
-//
-//	while (true) {
-//		switch (chs) {
-//		case 1:
-//			addMode(&abs);
-//			break;
-//		case 2:
-//			break;
-//		case 3:
-//			break;
-//		case 4:
-//			break;
-//		default:
-//			cout << "chooose one from menu pls" << endl;
-//			return;
-//		}
-//	}
-//}
 
 void addMode(Addressbooks* abs) {
 
@@ -225,108 +250,112 @@ void addMode(Addressbooks* abs) {
 	}
 
 	if (ans == tans) {
-		cout << "congrats! u got it right!" << endl;
 		abs->studentArray[abs->s_size].addScore++;
-		//return;
+		abs->studentArray[abs->s_size].finalScore++;
+		cout << "congrats! u got it right!" << endl;
 	}
-	//break;
-	//return;
-	//exit();
 }
 
-//void addMode(Addressbooks *abs) {
-//	
-//	for (int j = 1; j < 6;) {
-//
-//		int num1 = rand() % 100 + 1;
-//		int num2 = rand() % 100 + 1;
-//
-//		int a = 0;
-//		int tans = num1 + num2;
-//
-//		cout << "\nur now in add mode\n"
-//			 << "u have 3 tries total for each questions\n"
-//			 << "u will not recive credit for that question if u got that wrong for 3 times" << endl;
-//
-//		cout << "\n" << j << ". " << num1 << " + " << num2 << " \n  = " << endl;
-//
-//		for (int i = 0; i < 3; i++) {
-//
-//			cin >> a;
-//
-//			if (a == tans) {
-//				cout << "congrats! u got it right!" << endl;
-//				//abs->studentArray[abs->s_size].addScore++;
-//				//return 1;
-//				abs->studentArray[abs->s_size].addScore++;
-//				//i++;
-//				//j++;
-//				//system("pause");
-//				//system("CLS");
-//				return;
-//			}
-//			else if (i < 2 && a != tans) {
-//				cout << "wrong answer, u have " << 2 - i << " more tries" << endl;
-//			}
-//			else {
-//				cout << "sry ur wrong for 3 times" << endl;
-//				//return -1;
-//				//system("pause");
-//				//system("CLS");
-//				//j++;
-//				//return;
-//			}
-//		}
-//	}
-//	//int pts = isCorrect(ans,tans);
-//	//if (pts != -1) {
-//	//	abs->studentArray[abs->s_size].addScore++;
-//	//	system("pause");
-//	//	system("CLS");
-//	//}
-//	//else {
-//	//	system("pause");
-//	//}
-//	//system("pause");
-//	//system("CLS");
-//}
+void subMode(Addressbooks* abs) {
 
-//int isCorrect(int ans, int tans) {
-//
-//	for (int i = 0; i > 3; i++) {
-//
-//		if (ans == tans) {
-//			cout << "congrats! u got it right!" << endl;
-//			//abs->studentArray[abs->s_size].addScore++;
-//			return 1;
-//		}
-//		else if (i == 3 && ans != tans) {
-//			cout << "this is ur last try!" << endl;
-//		}
-//		else if (i < 3 && ans != tans) {
-//			cout << "wrong answer, u have " << 3 - i << " more tries" << endl;
-//		}
-//		else {
-//			cout << "sry ur wrong for 3 times" << endl;
-//			return -1;
-//		}
-//	}
-//}
+	int num1 = rand() % 10 + 1;
+	int num2 = rand() % 10 + 1;
+
+	int ans = 0;
+	int tans = num1 - num2;
+	int tries = 1;
+
+		cout << "\n" << num1 << " - " << num2 << "\n= " << endl;
+		cin >> ans;
+
+	while ((tans != ans) && (tries <= 2)) {
+		cout << "wrong answer, u have " << 2 - tries << " more tries" << endl;
+		tries++;
+		cin >> ans;
+		break;
+	}
+
+	if (ans == tans) {
+		abs->studentArray[abs->s_size].subScore++;
+		abs->studentArray[abs->s_size].finalScore++;
+		cout << "congrats! u got it right!" << endl;
+	}
+}
+
+void mulMode(Addressbooks* abs) {
+
+	int num1 = rand() % 10 + 1;
+	int num2 = rand() % 10 + 1;
+
+	int ans = 0;
+	int tans = num1 * num2;
+	int tries = 1;
+
+		cout << "\n" << num1 << " * " << num2 << "\n= " << endl;
+		cin >> ans;
+
+	while ((tans != ans) && (tries <= 2)) {
+		cout << "wrong answer, u have " << 2 - tries << " more tries" << endl;
+		tries++;
+		cin >> ans;
+		break;
+	}
+
+	if (ans == tans) {
+		abs->studentArray[abs->s_size].mulScore++;
+		abs->studentArray[abs->s_size].finalScore++;
+		cout << "congrats! u got it right!" << endl;
+	}
+}
+
+void divMode(Addressbooks* abs) {
+
+
+	int num1 = rand() % 99 + 10;
+	int num2 = rand() % 9 + 1;
+
+	int ans = 0;
+	int tans = num1 / num2;
+	int tries = 1;
+	int gun = num1 % num2;
+
+	num1 = num1 - gun;
+
+		cout << "\n" << num1 << " / " << num2 << "\n= " << endl;
+		cin >> ans;
+
+		while ((tans != ans) && (tries <= 2)) {
+			cout << "wrong answer, u have " << 2 - tries << " more tries" << endl;
+			tries++;
+			cin >> ans;
+			break;
+		}
+
+		if (ans == tans) {
+			abs->studentArray[abs->s_size].divScore++;
+			abs->studentArray[abs->s_size].finalScore++;
+			cout << "congrats! u got it right!" << endl;
+		}
+}
 
 void showStatsAll(Addressbooks* abs) {
 	if (abs->s_size == 0) {
 		cout << "add a student before show stats" << endl;
 	}
 	else {
-		for (int i = 0; i < abs->s_size; i++) {
-			cout << "\n" << i + 1 << ". " << endl;
+		for (int i = 0; i <= abs->s_size; i++) {
+			if (i == 0) {
+				i++;
+			}
+			cout << "\n" << i << ". " << endl;
 			cout << "name: " << abs->studentArray[i].s_name
-				<< "\tgrade: " << abs->studentArray[i].s_grade
-				<< "\tage: " << abs->studentArray[i].s_age
-				<< "\tadd socre: " << abs->studentArray[i].addScore
-				<< "\tsub score: " << abs->studentArray[i].subScore
-				<< "\nmul score: " << abs->studentArray[i].mulScore
-				<< "\ndiv score: " << abs->studentArray[i].divScore << endl;
+				 << "\ngrade: " << abs->studentArray[i].s_grade
+				 << "\nage: " << abs->studentArray[i].s_age
+				 << "\nadd socre: " << abs->studentArray[i].addScore
+				 << "\nsub score: " << abs->studentArray[i].subScore
+				 << "\nmul score: " << abs->studentArray[i].mulScore
+				 << "\ndiv score: " << abs->studentArray[i].divScore 
+				 << "\nfinal score: " << abs->studentArray[i].finalScore << endl;
 		}
 	}
 }
@@ -353,12 +382,13 @@ void showStatsOne(Addressbooks* abs) {
 	if (ret != -1) {//founded
 
 		cout << "name: " << abs->studentArray[ret].s_name
-			 << "\tphone: " << abs->studentArray[ret].s_grade
-			 << "\tage: " << abs->studentArray[ret].s_age
-			 << "\tadd socre: " << abs->studentArray[ret].addScore
-			 << "\tsub score: " << abs->studentArray[ret].subScore
+			 << "\nphone: " << abs->studentArray[ret].s_grade
+			 << "\nage: " << abs->studentArray[ret].s_age
+			 << "\nadd socre: " << abs->studentArray[ret].addScore
+			 << "\nsub score: " << abs->studentArray[ret].subScore
 			 << "\nmul score: " << abs->studentArray[ret].mulScore
-			 << "\ndiv score: " << abs->studentArray[ret].divScore << endl;
+			 << "\ndiv score: " << abs->studentArray[ret].divScore
+			 << "\nfinal score: " << abs->studentArray[ret].finalScore << endl;
 	}
 	else {//not founded
 
@@ -430,12 +460,12 @@ void removeAll(Addressbooks* abs) {
 
 	abs->s_size = 0;
 	cout << "your contact list are already cleared" << endl;
+	return;
 }
 
-void showRank(Addressbooks* abs) {
+void showAddRank(Addressbooks* abs) {
 	int max;
 	int index;
-	//int SIZE = sizeof(abs->studentArray) / sizeof(abs->studentArray[0]);
 
 	for (max = abs -> s_size - 1; max > 0; max--) {
 
@@ -448,8 +478,93 @@ void showRank(Addressbooks* abs) {
 		}
 	}
 
-	for (int i = abs->s_size - 1; i >= 0; i--) {
-		cout << "\n" << abs->studentArray[i].addScore << endl;
+	for (int i = abs->s_size; i > 0; i--) {
+
+		cout << "\n" << abs->studentArray[i].s_name << "---" << abs->studentArray[i].addScore << endl;
+	}
+}
+
+void showSubRank(Addressbooks* abs) {
+	int max;
+	int index;
+
+	for (max = abs->s_size - 1; max > 0; max--) {
+
+		for (index = 0; index < max; index++) {
+
+			if (abs->studentArray[index].subScore > abs->studentArray[index + 1].subScore) {
+
+				swap(abs->studentArray[index].subScore, abs->studentArray[index + 1].subScore);
+			}
+		}
+	}
+
+	for (int i = abs->s_size; i > 0; i--) {
+
+		cout << "\n" << abs->studentArray[i].s_name << "---" << abs->studentArray[i].subScore << endl;
+	}
+}
+
+void showMulRank(Addressbooks* abs) {
+	int max;
+	int index;
+
+	for (max = abs->s_size - 1; max > 0; max--) {
+
+		for (index = 0; index < max; index++) {
+
+			if (abs->studentArray[index].mulScore > abs->studentArray[index + 1].mulScore) {
+
+				swap(abs->studentArray[index].mulScore, abs->studentArray[index + 1].mulScore);
+			}
+		}
+	}
+
+	for (int i = abs->s_size; i > 0; i--) {
+
+		cout << "\n" << abs->studentArray[i].s_name << "---" << abs->studentArray[i].mulScore << endl;
+	}
+}
+
+void showDivRank(Addressbooks* abs) {
+	int max;
+	int index;
+
+	for (max = abs->s_size - 1; max > 0; max--) {
+
+		for (index = 0; index < max; index++) {
+
+			if (abs->studentArray[index].divScore > abs->studentArray[index + 1].divScore) {
+
+				swap(abs->studentArray[index].divScore, abs->studentArray[index + 1].divScore);
+			}
+		}
+	}
+
+	for (int i = abs->s_size; i > 0; i--) {
+
+		cout << "\n" << abs->studentArray[i].s_name << "---" << abs->studentArray[i].divScore << endl;
+	}
+}
+
+void showFinalRank(Addressbooks* abs) {
+	int max;
+	int index;
+
+	for (max = abs->s_size - 1; max > 0; max--) {
+
+		for (index = 0; index < max; index++) {
+
+			if (abs->studentArray[index].finalScore > abs->studentArray[index + 1].finalScore) {
+
+				swap(abs->studentArray[index].finalScore, abs->studentArray[index + 1].finalScore);
+			}
+		}
+	}
+
+	for (int i = abs->s_size; i > 0; i--) {
+
+		cout << "\n" << abs->studentArray[i].s_name << "---" << abs->studentArray[i].finalScore << endl;
 	}
 }
 
